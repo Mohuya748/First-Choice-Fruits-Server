@@ -37,7 +37,7 @@ async function run(){
 
          });
 
-         // POST 
+         // POST: add a new user
         app.post('/inventory',async(req,res)=>{
           const newInventory = req.body;
           console.log("adding new  item", newInventory);
