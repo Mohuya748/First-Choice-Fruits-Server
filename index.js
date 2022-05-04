@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const port =process.env.PORT || 5000;
 const app = express();
@@ -20,13 +20,38 @@ async function run(){
         await client.connect();
         const inventoryCollection = client.db('FirstChoiceFruits').collection('inventory');
 
-        // GET user 
+        // GET 
         app.get('/inventory',async(req,res)=>{
          const query = {};
          const cursor= inventoryCollection.find(query);
          const inventories = await cursor.toArray();
          res.send(inventories);
          });
+
+         
+         app.get('/inventory/:id',async(req,res)=>{
+          const id = req.params.id;
+          const query = {_id: ObjectId(id)};
+          const result = await inventoryCollection.findOne(query);
+          res.send(result);
+
+         });
+
+         // POST 
+        app.post('/inventory',async(req,res)=>{
+          const newInventory = req.body;
+          console.log("adding new  item", newInventory);
+          const result = await inventoryCollection.insertOne(newInventory);
+          res.send({result})
+         })
+
+          //  Delete a user 
+        app.delete('/inventory/:id',async(req,res)=>{
+          const id = req.params.id;
+          const query = {_id: ObjectId(id)};
+          const result = await inventoryCollection.deleteOne(query);
+          res.send(result);
+        })
         }
         finally{
     
