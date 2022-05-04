@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const res = require('express/lib/response');
 require('dotenv').config()
 const port =process.env.PORT || 5000;
 const app = express();
@@ -19,6 +21,13 @@ async function run(){
     try{
         await client.connect();
         const inventoryCollection = client.db('FirstChoiceFruits').collection('inventory');
+
+        // AUTH
+        app.post('/login',async(req,res) => {
+          const user =req.body;
+          const accessToken = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET , { expiresIn: '2d'});
+          res.send({accessToken});
+        })
 
         // GET a user
         app.get('/inventory',async(req,res)=>{
@@ -52,6 +61,9 @@ async function run(){
           const result = await inventoryCollection.deleteOne(query);
           res.send(result);
         })
+
+        
+
         }
         finally{
     
