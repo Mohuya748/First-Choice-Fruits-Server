@@ -20,7 +20,7 @@ async function run(){
         await client.connect();
         const inventoryCollection = client.db('FirstChoiceFruits').collection('inventory');
 
-        // GET 
+        // GET a user
         app.get('/inventory',async(req,res)=>{
          const query = {};
          const cursor= inventoryCollection.find(query);
