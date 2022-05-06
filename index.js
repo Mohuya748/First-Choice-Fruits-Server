@@ -62,6 +62,21 @@ async function run(){
 
          });
 
+         app.put('/inventory/:id',async(req,res)=>{
+          const id = req.params.inventoryId;
+          const updateUser = req.body;
+          const filter = {_id: ObjectId(id)};
+          const options ={upsert: true};
+          const updateDoc ={
+            $set:{
+             Quantity: updateUser.Quantity
+              
+            }
+          };
+          const result = await inventoryCollection.updateOne(filter,updateDoc,options);
+          res.send(result);
+         })
+
          // POST: add a new user
         app.post('/inventory',async(req,res)=>{
           const newInventory = req.body;
@@ -71,19 +86,9 @@ async function run(){
          })
         
 
-         app.get('/additem',async(req,res)=>{
-           const decodedEmail = req.decoded;
-           const email = req.query.email;
-           if(email===decodedEmail){
-            const query ={email:email};
-            const cursor = inventoryCollection.find(query);
-            const items = await cursor.toArray();
-            res.send(items);
-           }
-           else{
-             res.status(403).send({message:'forbidden access'})
-           }
-           
+         app.get('/myitems/:email',async(req,res)=>{
+           const result = await inventoryCollection.find({email:req.params.email,}).toArray();
+           res.send(result);
          })
 
           //  Delete a user 
