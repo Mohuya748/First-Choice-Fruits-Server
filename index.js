@@ -92,9 +92,11 @@ async function run() {
     })
 
 
-    app.get('/myitems/:email', async (req, res) => {
-      const result = await inventoryCollection.find({ email: req.params.email, }).toArray();
-      res.send(result);
+    app.get('/myitems', async (req, res) => {
+      const query = {};
+      const cursor = inventoryCollection.find(query);
+      const myitem = await cursor.toArray();
+      res.send(myitem);
     })
 
     //  Delete a user 
