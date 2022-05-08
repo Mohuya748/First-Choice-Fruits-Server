@@ -101,6 +101,14 @@ async function run() {
       res.send(myitem);
     })
 
+    app.delete('/myitems/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await inventoryCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
     //  Delete a user 
     app.delete('/inventory/:id', async (req, res) => {
       const id = req.params.id;
