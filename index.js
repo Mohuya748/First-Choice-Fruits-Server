@@ -93,9 +93,9 @@ async function run() {
 
 // myitems add 
     app.get('/myitems', async (req, res) => {
-      const email =req.query;
+      const email =req.query.email;
       console.log(email)
-      const query = {};
+      const query = {email:email};
       const cursor = inventoryCollection.find(query);
       const myitem = await cursor.toArray();
       res.send(myitem);
