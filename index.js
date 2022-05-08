@@ -88,7 +88,7 @@ async function run() {
       const newInventory = req.body;
       console.log("adding new  item", newInventory);
       const result = await inventoryCollection.insertOne(newInventory);
-      res.send({ result })
+      res.send({ result });
     })
 
 // myitems add 
