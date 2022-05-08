@@ -67,12 +67,12 @@ async function run() {
       const id = req.params.id;
       const updateItem = req.body;
       console.log(id, updateItem)
-      const filter = { id: ObjectId(_id) };
+      const filter = { _id: ObjectId(id) };
       console.log(filter)
       const options = { upsert: true };
       const updatedDoc = {
         $set: {
-          Quantity: parseInt(updateItem.quantity),
+          Quantity: updateItem.quantity,
         }
       };
       console.log(updatedDoc)
